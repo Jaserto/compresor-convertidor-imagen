@@ -44,6 +44,39 @@
           <button class="btn btn-danger btn-block">Descargar Imagen</button>
         </div>
       </form>
+     
+      <form action="/compressimage" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+          <input
+            type="file"
+            name="file"
+            multiple
+            required
+            class="form-control"
+          />
+        </div>
+        Elige el formato:
+        <label class="radio-inline"
+          ><input type="radio" name="format" value="png" checked />png</label
+        >
+        <label class="radio-inline"
+          ><input type="radio" name="format" value="jpg" />jpg</label
+        >
+        <label class="radio-inline"
+          ><input type="radio" name="format" value="webp" />webp</label
+        >
+        <div class="form-group">
+          <label for="width">Anchura</label>
+          <input class="form-control" type="number" name="width" id="">
+        </div>
+        <div class="form-group">
+          <label for="height">Altura</label>
+          <input class="form-control" type="number" name="height" id="">
+        </div>
+        <div class="form-group">
+          <button class="btn btn-danger btn-block">Comprimir Imagen</button>
+        </div>
+      </form>
     </div>
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

@@ -6,7 +6,7 @@ const multer = require("multer");
 const imageSize = require("image-size");
 const sharp = require("sharp");
 
-let width, height, format, outputFilePath;
+let width, height, format, outputFilePath, size;
 
 
 
@@ -84,6 +84,30 @@ app.post('/processimage', upload.single('file'),(req, res) => {
     }
 })
 
+app.post('/compressimage', upload.single('file'),(req, res) => {
+  format = req.body.format;
+  width = parseInt(req.body.width);
+  height = parseInt(req.body.height);
+
+  if(req.file){
+   console.log(req.file.path)
+
+   if(isNaN(width) || isNaN(height)){
+       let {size, height, width} = imageSize(req.file.path)
+       console.log(size, width, height)
+       width = parseInt(width)
+
+       height = parseInt(height)
+
+       compressImage(width, height, req, res)
+   }else{
+    compressImage(width, height, req, res)
+   }
+
+  }
+})
+
+
 app.listen(PORT, () => {
   console.log(`App is listening on Port ${PORT}`);
 });
@@ -94,6 +118,25 @@ function processImage(width, height, req, res) {
   if (req.file) {
     sharp(req.file.path)
       .resize(width, height)
+      .toFile(outputFilePath, (err, info) => {
+        if (err) throw err;
+        res.download(outputFilePath, (err) => {
+          if (err) throw err;
+          fs.unlinkSync(req.file.path);
+          fs.unlinkSync(outputFilePath);
+        });
+      });
+  }
+}
+
+function compressImage(width, height, req, res) {
+  outputFilePath = Date.now() + "output." + format;
+  if (req.file) {
+    sharp(req.file.path)
+      .resize(width, height)
+      .jpeg({ 
+        quality: 80, 
+        chromaSubsampling:'4:4:4'})
       .toFile(outputFilePath, (err, info) => {
         if (err) throw err;
         res.download(outputFilePath, (err) => {
