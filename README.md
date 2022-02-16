@@ -1,4 +1,4 @@
-# 🖼️Comprime y Convierte tus imagenes.
+# 🖼️Comprime y Convierte tus imágenes.
 
 Un simple convertidor y compresor de images.
 
